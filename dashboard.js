@@ -27,7 +27,7 @@ var trasteStroke='grey';
 var trasteStroke_width='1';
 var trastePad_X='70';
 //posicion de las marcas del mastil
-//la x se calcula restando la var trastePadX a la pos del traste 
+//la x se calcula restando la var trastePadX a la pos del traste
 var trastePadX='35'
 var trasteY='275'
 //en los que se quiere marcar doble usar estas medidaas
@@ -55,26 +55,26 @@ var strokeWidthCircle=4;
 //0 1  2  3  4  5  6  7  8  9  10 11
 
 // F 2M 3M 5J 6M
-var pentatonicaMayor = ["0","2","4","7","9"]
+var pentatonicaMayor = ["F","2M","3M","5J","6M"]
 // F 3m 4J 5J 7m
-var pentatonicaMenor = ["0","3","5","7","10"]
+var pentatonicaMenor = ["F","3m","4J","5J","7b"]
 // F 2M 3M 4J 5J 6M 7M
-var ionian = ["0","2","4","5","7","9","11"]
+var ionian = ["F","2M","3M","4J","5J","6M","7M"]
 // F 2M 3b 4J 5J 6M 7M
-var dorian = ["0","2","3","5","7","9","10"]
+var dorian = ["F","2M","3m","4J","5J","6M","7b"]
 // F 2M 3b 4J 5J 6b 7b
-var phrygian = ["0","2","4","5","7","8","10"]
+var phrygian = ["F","2M","3M","4J","5J","6m","7b"]
 // F 2M 3M 4# 5J 6M
-var lydian = ["0","2","4","6","7","9","11"]
+var lydian = ["F","2M","3M","4aum","5J","6M","7M"]
 // F 2M 3M 4J 5J 6M 7b
-var mixolydian = ["0","2","4","5","7","9","10"]
+var mixolydian = ["F","2M","3M","4J","5J","6M","7b"]
 // F 2M 3b 4J 5J 6b 7b
-var aeolian = ["0","2","3","5","7","8","10"]
+var aeolian = ["F","2M","3m","4J","5J","6m","7b"]
 // F 2b 3b 4J 4#/5b 6b 7b
-var locrian = ["0","1","3","5","6","8","10"]
+var locrian = ["F","2m","3m","4J","4aum","6m","7b"]
 
 //F 3M 5J 7b
-var acordesDominantes = ["0","4","7","10"]
+var acordesDominantes = ["F","3M","5J","7b"]
 
 var arpeggios= [];
 
@@ -89,7 +89,7 @@ var scalesPainted=[];
 //mode-onlyBoxes-Box1/box2/..box5
 
  // fixed index:
-    // 0  1  2  3  4  5  6  7  8  9  10 11 
+    // 0  1  2  3  4  5  6  7  8  9  10 11
     // A     B  C     D     E  F     G
 var	notes = [
         { id: 0, index: 0, label: "A" , text:"A" },
@@ -111,14 +111,16 @@ var notesWithCurrentTonicOrderByIndex=[];
 
 
 $( document ).ready( function() {
-paintDashboard();
+  console.log("readyToRock");
+/*
+    paintDashboard();
     paintSelectModes();
     paintIntervals();
     paintNotes();
     paintButtons(0);
    // paintOptions(0,-1);
    paintOptions(0);
-
+*/
 });
 
 function pintaChachiScale(index){pintaChachi(index);}
@@ -141,9 +143,9 @@ for (var cuerda=1; cuerda<7; cuerda++) {
     var colour = 'white';
     if(this['note'] == tonica)colour='yellow';
     pintaNote(cuerda,colour,this['note'],radioSizeCircle,strokeWidthCircle,stroke,this["interval"]);
-        
 
-    
+
+
 }
 usedintervals(this["interval"]);
 });
@@ -160,7 +162,7 @@ paintSelectModes();
 paintOptions(0);
 
 jsonObj = [];
-  //pongo a uno que hay una escala ya pintada 
+  //pongo a uno que hay una escala ya pintada
   isAScalePaint=1;
 }
 
@@ -213,5 +215,3 @@ for (var cuerda=cuerdaBase_Int-3; cuerda<cuerdaBase_Int+1; cuerda++) {
 
 
 }
-
-

@@ -1,6 +1,6 @@
  //F 2m 2M 3m 3M 4J 4# 5J 6m 6M 7b 7M
 //0 1  2  3  4  5  6  7  8  9  10 11
- var mastilNotes = [ 
+ var mastilNotes = [
         { id: 0,  label: "A"},
         { id: 1,  label: "A#"},
         { id: 2,  label: "B"},
@@ -13,56 +13,67 @@
         { id: 9,  label: "F#"},
         { id: 10, label: "G"},
         { id: 11, label: "G#"},
-     ];        
-function getIntervalFromTonicByString(tonica, string){
+     ];
+
+  var afinacion = [
+         { id: 1,  label: "A"},
+         { id: 2,  label: "B"},
+         { id: 3,  label: "G"},
+         { id: 4,  label: "D"},
+         { id: 5,  label: "A"},
+         { id: 6,  label: "E"}
+      ];
+function getIntervalFromTonicByString(tonica, cuerda){
 
     var noteZero ='';
-    switch (string) {
+    switch (cuerda) {
 
         case 1:
-            noteZero= 'E';
-            break;  
+            noteZero= afinacion[0].label;
+            break;
         case 2:
-            noteZero= 'B';
-            break; 
+            noteZero= afinacion[1].label;
+            break;
         case 3:
-            noteZero= 'G';
-            break; 
+            noteZero= afinacion[2].label;
+            break;
         case 4:
-            noteZero= 'D';
-            break; 
+            noteZero= afinacion[3].label;
+            break;
         case 5:
-            noteZero= 'A';
-            break; 
+            noteZero= afinacion[4].label;
+            break;
         case 6:
-            noteZero= 'E';
-            break; 
+            noteZero= afinacion[5].label;
+            break;
     }
     var diferencia=0;
     var tonicaBoolean=false
 
-   // console.log('noteZero '+noteZero );
-   // console.log('tonica '+tonica );
+    console.log('noteZero '+noteZero );
+    console.log('tonica '+tonica );
      for(j = 0; j < mastilNotes.length; j++) {
-   // console.log('-------------mastilNotes '+mastilNotes[j].label );
+    console.log('-------------mastilNotes '+mastilNotes[j].label );
 
         if (mastilNotes[j].label ==  noteZero) {
          // console.log('noteZero true');
             noteZero=true;
             break;
-        }else 
+        }else
         if (mastilNotes[j].label ==  tonica) {
             // console.log('tonica true ');
             diferencia++;
             tonicaBoolean=true;
-            
+
         }else  if (noteZero && mastilNotes[j].label !=  tonica) {
          // console.log('diferencia');
                 diferencia++;
         }
     }
+    // TODO porque se repite
+
     if(!tonicaBoolean){
-     // console.log('como no se ha llegado a la tonica volvemos a recorrer');  
+     // console.log('como no se ha llegado a la tonica volvemos a recorrer');
 
       //si no se ha encontrado la tonica aun volvemos a recorrer el array desde el ppio para ver el num de notas que faltan
         for(j = 0; j < mastilNotes.length; j++) {
@@ -72,24 +83,25 @@ function getIntervalFromTonicByString(tonica, string){
                 tonicaBoolean=true;
                 break;
             }else if (mastilNotes[j].label !=  tonica) {
-             // console.log('diferencia');  
+             // console.log('diferencia');
                     diferencia++;
-             }       
+             }
 
         }
 
     }
-   // console.log('noteZero ' +noteZero);
-   // console.log('diferencia ' +diferencia);
+    
+    console.log('noteZero ' +noteZero);
+    console.log('diferencia ' +diferencia);
 return diferencia;
 
 }
 function createJSON(tonica, notes,scaleType) {
-    
+
     var root_id = 0;
     //console.log("crreamos el json para scaleType->" +scaleType);
 var scaleNotes = getScale(scaleType);
- 
+
 
 getNotesFromCurrentTonic(tonica,scaleNotes);
 
@@ -105,8 +117,8 @@ getNotesFromCurrentTonic(tonica,scaleNotes);
           //console.log('interval->' +interval);
           //console.log('value->' +value);
 
- var currentNoteName = notesWithCurrentTonicOrderByIndex[value].label; 
-  //console.log('aniadimos a jsonOBj la note->'+currentNoteName +' intervalo ->' +value);
+          var currentNoteName = notesWithCurrentTonicOrderByIndex[value].label;
+          //console.log('aniadimos a jsonOBj la note->'+currentNoteName +' intervalo ->' +value);
           item = {}
           item ["note"] = currentNoteName;
          item ["interval"] = value;
@@ -123,39 +135,39 @@ var scaleNotes ='';
 switch (index) {
     case 0:
         scaleNotes= ionian;
-        break; 
+        break;
     case 1:
         scaleNotes= dorian;
-        break;  
+        break;
     case 2:
         scaleNotes= phrygian;
-        break; 
+        break;
     case 3:
         scaleNotes= lydian;
-        break; 
+        break;
     case 4:
         scaleNotes= mixolydian;
-        break; 
+        break;
     case 5:
         scaleNotes= aeolian;
-        break; 
+        break;
     case 6:
         scaleNotes= locrian;
-        break; 
+        break;
     case 7:
         scaleNotes= pentatonicaMayor;
-        break; 
+        break;
     case 8:
         scaleNotes= pentatonicaMenor;
-        break; 
+        break;
     case 9:
         scaleNotes= acordesDominantes;
         break;
     case 10:
         scaleNotes= arpegios;
-        break;        
-   
-    default: 
+        break;
+
+    default:
         scaleNotes= '';
 }
 
@@ -203,7 +215,7 @@ function pintaNote(cuerda,colour,noteText,radioSizeCircle,strokeWidthCircle,stro
      //pintamos el segundo circulo despues para que no lo tape
      $(noteId).after(notaRepetida);
 */
- 
+
 
     var notaRepetida =  $(circleIdUsed)
     // console.log('notaRepetida== ' +notaRepetida);
@@ -247,9 +259,9 @@ function pintaNote(cuerda,colour,noteText,radioSizeCircle,strokeWidthCircle,stro
      $(noteTextId).attr('data-intervalo-name', getIntervalName(interval));
      $(noteOctaveText).html(noteText);
      $(noteOctaveText).attr('data-intervalo-name', getIntervalName(interval));
-    
+
    }
- } 
+ }
 
 
 function getCoordenatesUnion(cuerda,noteTextId){
@@ -262,7 +274,7 @@ function getCoordenatesUnion(cuerda,noteTextId){
        var noteGlobalX= parseInt($(noteTextId).attr('x'));
        var noteGlobalY= parseInt($(noteTextId).attr('y'));
        var padding_Y = parseInt(0);
-  
+
         padding_Y =  parseInt(translateCuerda1CoordinateY) + (parseInt(cuerda-1) * parseInt(translateCuerdaPad_Y));
         //console.log('padding_Y '+padding_Y);
         noteGlobalY= noteGlobalY+ padding_Y;
@@ -289,41 +301,41 @@ var interval_int=parseInt(interval);
 switch (interval_int) {
     case 0:
         interav_name= 'F';
-        break; 
+        break;
     case 1:
         interav_name= '2m';
-        break;  
+        break;
     case 2:
         interav_name= '2M';
-        break; 
+        break;
     case 3:
         interav_name= '3b';
-        break; 
+        break;
     case 4:
         interav_name= '3M';
-        break; 
+        break;
     case 5:
         interav_name= '4J';
-        break; 
+        break;
     case 6:
         interav_name= '4#';
-        break; 
+        break;
     case 7:
         interav_name= '5J';
-        break; 
+        break;
     case 8:
         interav_name= '6m';
-        break; 
+        break;
     case 9:
         interav_name= '6M';
-        break; 
+        break;
     case 10:
         interav_name= '7b';
-        break; 
+        break;
     case 11:
         interav_name= '7M';
-        break;                                     
-    default: 
+        break;
+    default:
         interav_name= '';
 }
 //console.log('interav_name->'+interav_name);
@@ -335,13 +347,13 @@ function usedintervals(currentInterval){
 
 $.each(currentUsedIntervals,function() {
   //console.log('se activa el intervalo->'+currentInterval );
-  
+
      if(this['intervalo'] == currentInterval){
       //console.log("pintamos intervalo activado " + this['name']);
       this['ispart'] = "1";
-      
+
     }
-   
+
 });
 }
 
@@ -353,7 +365,7 @@ notesWithCurrentTonicOrderByIndex=[];
 var notesWithCurrentTonic =[];
 var contador = parseInt(0);
 
-  
+
            $.each(notes,function(index, value) {
           // console.log("nota que viene del array notes->"+this['label']);
          //   if(this['label'] == value){
@@ -361,13 +373,13 @@ var contador = parseInt(0);
                  if(this['label'] == tonica){
             //    console.log("es la tonica luego pongo index = 0 y pongo tonicaUsed =1 y lo meto en el array notesWithCurrentTonic");
                       contador = '0';
-                      tonicaUsed='1'; 
+                      tonicaUsed='1';
                       tonicaIndex=this['index'];
                       item = {}
                       item ["id"] = 0;
                       item ["index"] = 0;
                       item ["label"] = this['label'];
-                      item ["text"] = this['text']; 
+                      item ["text"] = this['text'];
                       notesWithCurrentTonicOrderByIndex.push(item);
 
                  }else if (tonicaUsed=='1'){
@@ -380,11 +392,11 @@ var contador = parseInt(0);
                       item ["id"] = contador;
                       item ["index"] = contador;
                       item ["label"] = this['label'];
-                      item ["text"] = this['text']; 
+                      item ["text"] = this['text'];
                       notesWithCurrentTonicOrderByIndex.push(item);
 
-                 } 
-            
+                 }
+
          });
 
 //ahora lo recorremos otra vez para poner las notas que no hemos metido
@@ -398,7 +410,7 @@ var contador = parseInt(0);
                       item ["id"] = contador;
                       item ["index"] = contador;
                       item ["label"] = this['label'];
-                      item ["text"] = this['text']; 
+                      item ["text"] = this['text'];
                       notesWithCurrentTonicOrderByIndex.push(item);
             }
 
@@ -410,9 +422,9 @@ var contador = parseInt(0);
 
 
  function bg(naturalNote) {
-       
+
       // console.log("calculamos para la nota natural" +naturalNote);
-       
+
        if(naturalNote == 'B' || naturalNote == 'C' || naturalNote == 'F' ){
             return [
                     { id: 0 ,text: naturalNote},
@@ -421,19 +433,19 @@ var contador = parseInt(0);
             return [
                 { id: 0 ,text: naturalNote+"♭" },
                 { id: 1 ,text: naturalNote},
-               
-             
-                   
+
+
+
                 ];
         }
 }
 
 function destacaIntervalo(intervalo,colour,stroke_width,onlyThisInterval,cuerda,onlyBox) {
     //console.log("intervalo a destacar -> "+intervalo);
- 
-    var defaultStroke='none'; 
+
+    var defaultStroke='none';
     var defatultStroke_Width='0';
- 
+
   svgDashBoard.selectAll('circle').filter(function() {
 
         if(d3.select(this).attr("data-intervalo") !=null && cuerda !='0'){
@@ -443,7 +455,7 @@ function destacaIntervalo(intervalo,colour,stroke_width,onlyThisInterval,cuerda,
 
         }else   return d3.select(this).attr("data-intervalo") !=null;
 
- }).each(function(d, i){ 
+ }).each(function(d, i){
   if(intervalo == d3.select(this).attr("data-intervalo")){
   //console.log('data-intervalo  recuperado-> ' +d3.select(this).attr("data-intervalo"));
   //console.log('id recuperado -> ' +d3.select(this).attr("id"));
@@ -452,18 +464,18 @@ function destacaIntervalo(intervalo,colour,stroke_width,onlyThisInterval,cuerda,
     //como hemos limpiado el mastil en onlyBox hay que volver a poner el texto
     if(onlyBox){
       /*
-svgDashBoard.selectAll('circle').each(function(d, i){ 
+svgDashBoard.selectAll('circle').each(function(d, i){
          d3.select(this).attr("fill","rgba(255, 255, 255, 0.01)");
             d3.select(this).attr("stroke","none");
             d3.select(this).attr("stroke-width","none");
              d3.select(this).attr("data-intervalo",null);
-    });    
+    });
 
-    svgDashBoard.selectAll('text').each(function(d, i){ 
+    svgDashBoard.selectAll('text').each(function(d, i){
          d3.select(this).attr("data-intervalo-name",null);
            d3.select(this).text('');
             d3.select(this).attr("stroke-width","none");
-    }); 
+    });
 
 */
     }
@@ -507,35 +519,35 @@ function cambiaTonalidad(tonalidad) {
      tonica = tonalidad;
     paintNotes();
     cleanAll(true);
- 
+
 }
 
 
 function cleanAll(cleanScales) {
 
-    svgDashBoard.selectAll('circle').each(function(d, i){ 
+    svgDashBoard.selectAll('circle').each(function(d, i){
          d3.select(this).attr("fill","rgba(255, 255, 255, 0.01)");
             d3.select(this).attr("stroke","none");
             d3.select(this).attr("stroke-width","none");
              d3.select(this).attr("data-intervalo",null);
-    });    
+    });
 
-    svgDashBoard.selectAll('text').each(function(d, i){ 
+    svgDashBoard.selectAll('text').each(function(d, i){
          d3.select(this).attr("data-intervalo-name",null);
            d3.select(this).text('');
             d3.select(this).attr("stroke-width","none");
-    }); 
+    });
 
     $.each(currentUsedIntervals,function() {
         this["ispart"]='0';
     });
-    
-   
+
+
    if(cleanScales) scalesPainted=[];
     paintSelectModes();
     paintIntervals();
     paintOptions(0, -1);
 
 
- 
+
 }

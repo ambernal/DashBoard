@@ -1,5 +1,5 @@
  var modesNames = [
-        
+
         { name: 'Major / Ionian', index: 1 , mayorRelative : 0, minorRelative: 9},
         { name: 'Dorian', index: 2 , mayorRelative : 10, minorRelative: 7},
         { name: 'Phrygian', index: 3 , mayorRelative : 8, minorRelative: 5},
@@ -10,7 +10,7 @@
         { name: 'Pentatonic Mayor', index: 8 , mayorRelative : 0, minorRelative: 0},
         { name: 'Pentatonic Menor', index: 9 , mayorRelative : 0, minorRelative: 0},
     ];
-   
+
   var currentUsedIntervals = [
         { "name": "F",  "intervalo": "0", "ispart": "0" ,"stroke":"#C6BD41","stroke_width":"4" },
         { "name": "2b", "intervalo": "1", "ispart": "0" ,"stroke":"#ff8000","stroke_width":"3" },
@@ -24,12 +24,12 @@
         { "name": "6M", "intervalo": "9", "ispart": "0" ,"stroke":"#48CEE2","stroke_width":"3" },
         { "name": "7m", "intervalo": "10", "ispart": "0" ,"stroke":"#2AAC44","stroke_width":"3" },
         { "name": "7M", "intervalo": "11", "ispart": "0" ,"stroke":"#cc6600","stroke_width":"3" }
-        
-        ];  
+
+        ];
 
 
 var intervals = ['0','1','2','3','4','5','6','7','8','9','10','11','12-1','12-2','12-3','12-4'];
-var naturalNotes = [ 
+var naturalNotes = [
         { id: 0, index: 0, label: "A"},
         { id: 1, index: 1, label: "B"},
         { id: 2, index: 2, label: "C"},
@@ -37,7 +37,7 @@ var naturalNotes = [
         { id: 4, index: 4, label: "E"},
         { id: 5, index: 5, label: "F"},
         { id: 6, index: 6, label: "G"},
-                 ];                 
+                 ];
 
 var optionsIntervals = [
         { id: 0, index: 0, label: "pintaChachi", weight:'100'},
@@ -50,7 +50,7 @@ var optionsIntervals = [
 
  function paintDashboard() {
 
-
+  console.log("paintDashboard");
 var cuerdaTranslateStart= 20;
 var cuerdaTranslateSeparator= 40;
 var circleTranslateStart= 50;
@@ -64,6 +64,7 @@ svgDashBoard.selectAll("g").remove();
 
 var mastil=  svgDashBoard
 
+//pinta los trastes mastil
 var trastes=  mastil.append("g")
 for(var traste = 0 ; traste<16 ; traste ++){
  trastes.append("rect")
@@ -71,9 +72,9 @@ for(var traste = 0 ; traste<16 ; traste ++){
             .attr("y", 35)
             .attr("width", 5)
             .attr("height", 210)
-            .attr("fill",function (i) { 
+            .attr("fill",function (i) {
 
-             
+
              if(traste == 0){
                  return "black";
             }else{
@@ -86,9 +87,10 @@ for(var traste = 0 ; traste<16 ; traste ++){
             .attr("stroke-width",'1' )
 }
 
+//pinta los circulos de indicador de los trastes
 var signalTraste=  mastil.append("g")
 
-var signalCoordenates = [ 
+var signalCoordenates = [
         { id: 0, x: 260},
         { id: 1, x: 400},
         { id: 2, x: 540},
@@ -97,41 +99,41 @@ var signalCoordenates = [
         { id: 5, x: 900},
         { id: 6, x: 1100},
 
-                 ];  
+                 ];
 
-           
+
             signalTraste.selectAll("circle")
             .data(signalCoordenates)
             .enter()
             .append("circle")
-            .attr("cx",function (d) { 
+            .attr("cx",function (d) {
                  return d.x;
-       
+
           })
             .attr("r", 10)
             .attr("cy", 275)
             .attr("fill",'lightgrey')
             .attr("stroke",'none' )
 
-
+//pinta las cuerdas
 var cuerdasMastil=  mastil.append("g")
-for (var cuerda=0; cuerda<6; cuerda++) {
-
-    var intervalStartRoot = getIntervalFromTonicByString(tonica, (cuerda+1))
+for (var cuerda=1; cuerda=6; cuerda++) {
+console.log("pinta la cuerda" +cuerda);
+    var intervalStartRoot = getIntervalFromTonicByString(tonica, cuerda)
     var intervalStart= intervalStartRoot;
-    //console.log("intervalStart -> " +intervalStart);
+    console.log("intervalStart para pintar en el dashboard (Traste donde esta la tonica)-> " +intervalStart);
 
     var idGeneratedName = '';
 
 
-
+//agrupador de lo que hay en la cuerda
      var line=  cuerdasMastil
             .append("g")
             .attr("id","cuerda"+cuerda)
             .attr("transform", "translate(0, "+ (cuerdaTranslateStart+(cuerda*cuerdaTranslateSeparator))+")")
-      
 
 
+//pinta las cuerda
        var cuerdas=  line.append("line")
             .attr("x1",90 )
             .attr("y1", 20)
@@ -139,17 +141,17 @@ for (var cuerda=0; cuerda<6; cuerda++) {
             .attr("y2", 20)
             .attr("stroke-width",'2' )
             .attr("stroke",'black' )
-  //circles
+  //pinta los circles
         var circles =     line.selectAll("circle")
             .data(intervals)
             .enter()
             .append("circle")
-             .attr("id",function (d, i) { 
+             .attr("id",function (d, i) {
                 var idGenerated = '';
                 var octava = '';
-                idGenerated = (cuerda+1);
+                idGenerated = (cuerda);
                 if(intervalStart>11)intervalStart = 0;
-                if(i>11) octava= '12-' 
+                if(i>11) octava= '12-'
                 idGenerated = 'string-'+idGenerated +'-'+ octava +intervalStart
                 intervalStart++
                return idGenerated
@@ -161,8 +163,8 @@ for (var cuerda=0; cuerda<6; cuerda++) {
             .attr("cx", function (d, i) {return circleTranslateStart+ (circleTranslateSeparator*i) })
             .attr("fill", 'rgba(255, 255, 255, 0.01)')
             .attr("stroke-width",'0' )
-            .attr("stroke",'none' )      
-         
+            .attr("stroke",'none' )
+
 //rhombus
  intervalStart= intervalStartRoot;
 
@@ -176,21 +178,21 @@ var radioSizeCircleInt = parseInt(radioSizeCircle);
             .data(intervals)
             .enter()
             .append("polygon")
-             .attr("id",function (d, i) { 
+             .attr("id",function (d, i) {
                 var idGenerated = '';
                 var octava = '';
-                idGenerated = (cuerda+1);
+                idGenerated = (cuerda);
                 if(intervalStart>11)intervalStart = 0;
-                if(i>11) octava= '12-' 
+                if(i>11) octava= '12-'
                 idGenerated = 'rhombus-string-'+idGenerated +'-'+ octava +intervalStart
                 intervalStart++
                return idGenerated
             })
 
-    .attr("points",function (d, i) { 
+    .attr("points",function (d, i) {
               cXOrigen =   parseInt(circleTranslateStart+ (circleTranslateSeparator*i));
               var coordenates= cXOrigen.toString() +","+(cYOrigen-radioSizeCircleInt).toString()
-                coordenates = coordenates +" "+(cXOrigen-radioSizeCircleInt).toString()+","+cYOrigen.toString()  
+                coordenates = coordenates +" "+(cXOrigen-radioSizeCircleInt).toString()+","+cYOrigen.toString()
                 coordenates = coordenates +" "+cXOrigen.toString()+","+(cYOrigen+radioSizeCircleInt).toString()
                 coordenates = coordenates +" "+(cXOrigen+(radioSizeCircleInt)).toString()+","+cYOrigen.toString();
                return coordenates
@@ -209,9 +211,9 @@ var radioSizeCircleInt = parseInt(radioSizeCircle);
              .attr("id",function (d, i) {
                 var idGenerated = '';
                 var octava = '';
-                idGenerated = (cuerda+1);
+                idGenerated = (cuerda);
                 if(intervalStart>11)intervalStart = 0;
-                if(i>11) octava= '12-' 
+                if(i>11) octava= '12-'
                 idGenerated = 'string-'+idGenerated +'-'+ octava +intervalStart
                  intervalStart++
                return idGenerated + '-text'
@@ -221,7 +223,7 @@ var radioSizeCircleInt = parseInt(radioSizeCircle);
             .attr("text-anchor","middle")
             .attr("x", function (d, i) {return textTranslateStart+ (textTranslateSeparator*i) })
             .attr("y", 25)
-       
+
 }
 }
 
@@ -229,7 +231,7 @@ var radioSizeCircleInt = parseInt(radioSizeCircle);
  function paintSelectModes() {
         var pad = 5;
         var buttonHeight = 25;
-      
+
         svgModes.selectAll("g").remove();
 
         var modes = svgModes
@@ -240,7 +242,7 @@ var radioSizeCircleInt = parseInt(radioSizeCircle);
             .enter()
             .append("g")
             .attr("transform", function (d, i) { return "translate(0, " + (i * (buttonHeight + pad) + pad) + ")"; });
-          
+
         buttons = gs
             .append("rect")
             .attr("x", pad)
@@ -248,9 +250,9 @@ var radioSizeCircleInt = parseInt(radioSizeCircle);
             .attr("ry","10")
             .attr("y", 0)
             .attr("strokeWidth", 2)
-            .attr("fill",function (d, i) { 
+            .attr("fill",function (d, i) {
 
-             
+
              var isModeSelected= 0;
 
              for(j = 0; j < scalesPainted.length; j++) {
@@ -268,12 +270,12 @@ var radioSizeCircleInt = parseInt(radioSizeCircle);
             }
 
           })
-            
+
             .attr("stroke","red")
             .attr("width", 150)
             .attr("height", 25)
             .attr("class", "mode-button")
-            .on("click", function(d,i) { 
+            .on("click", function(d,i) {
 
                scale = {}
               scale ["mode"] = i;
@@ -281,8 +283,8 @@ var radioSizeCircleInt = parseInt(radioSizeCircle);
               scale ["name"] = d.name;
               scale ["mayorRelative"] = d.mayorRelative;
               scale ["minorRelative"] = d.minorRelative;
-              scalesPainted.push(scale);    
-                pintaChachiScale(i); 
+              scalesPainted.push(scale);
+                pintaChachiScale(i);
            });
         gs
             .append("text")
@@ -301,7 +303,7 @@ function paintIntervals() {
         var pad = 15;
         var buttonHeight = 25;
         var buttonWeight = 45;
-        
+
         var transalateStr='';
         var y = 0;
         var x = 0;
@@ -315,20 +317,20 @@ function paintIntervals() {
             .data(currentUsedIntervals)
             .enter()
             .append("g")
-            .attr("transform", function (d, i) { 
+            .attr("transform", function (d, i) {
 
              if(d.name.endsWith('M') || d.name.endsWith('#') ){
                  return "translate("+ (parseInt(buttonWeight) + (parseInt(pad)*2)) +", " + y + ")";
 
             }else{
-               
+
                 y= x * (buttonHeight + pad);
                  x++;
                 return "translate(0, " + y + ")";
             }
 
        })
-            
+
         buttons = gs
             .append("rect")
             .attr("rx","5")
@@ -338,11 +340,11 @@ function paintIntervals() {
             .attr("strokeWidth", 4)
             .attr("fill",function (x) {
                  if(x.ispart == "1"){
-                return x.stroke; 
+                return x.stroke;
                     }else{
                 return "white";}
            })
-            
+
             .attr("stroke","black")
             .attr("width", 40)
             .attr("height", 25)
@@ -356,7 +358,7 @@ function paintIntervals() {
             .attr("y", 17)
             .text(function (x) {return x.name;})
             .attr("stroke", "#000000")
-            .attr("class", "mode-text");    
+            .attr("class", "mode-text");
 
 //separador Izquerdo
  svgIntervals
@@ -379,7 +381,7 @@ function paintIntervals() {
             .attr("strokeWidth", 4)
             .attr("stroke","black")
             .attr("width", 2)
-            .attr("height", 200)        
+            .attr("height", 200)
 
 ////
 
@@ -397,7 +399,7 @@ function paintButtons(optionSelected){
         var gs = intervalsOptions.selectAll("g")
             .data(optionsIntervals)
             .enter()
-            .append("g")                               
+            .append("g")
             .attr("transform", function (d, i) { return "translate(" + (parseInt(d.weight) + (parseInt(pad)*2)) +", 15 )"; });
          buttons = gs
             .append("rect")
@@ -459,11 +461,11 @@ function paintNotes() {
             .attr("fill",function (x) {
 
                 if(tonica == x.text){
-                return "yellow"; 
+                return "yellow";
                     }else{
                 return "white";}
            })
-            
+
             .attr("stroke","black")
             .on("click", function(d,i) {  cambiaTonalidad(d.text);  });
         gs
@@ -471,7 +473,7 @@ function paintNotes() {
             .attr("x", pad + 10)
             .attr("y", 17)
             .text(function (x) { return x.text; })
-            .attr("class", "tonic-text");               
+            .attr("class", "tonic-text");
 }
 
 
@@ -481,8 +483,8 @@ function paintNotes() {
     //el mode es la escala usada
              console.log('paintOptions');
     //type= 0 ->notes
-    //type= 1-> intervals 
-    
+    //type= 1-> intervals
+
         var pad = 15;
         var buttonHeight = 25;
         var buttonWeight = 45;
@@ -494,11 +496,11 @@ var optionsLabel = [
         { id: 1, operation: 1, label: "Show Intervals"},
  ];
 
-var options_Boxes_Modes=[        
+var options_Boxes_Modes=[
         { id: 1, index: 1, label: "Show Box"},
  ];
 
-var options_Boxes_Pentatonic=[        
+var options_Boxes_Pentatonic=[
         { id: 1, index: 1, label: "Show Box1"},
         { id: 2, index: 2, label: "Show Box2"},
         { id: 3, index: 3, label: "Show Box3"},
@@ -529,19 +531,19 @@ var onlyBox=false;
             .attr("fill",function (x) {
 
                 if((type == "0" && x.id == '0') || (type == "1" && x.id == '1')){
-                return "yellow"; 
+                return "yellow";
                     }else{
                 return "white";}
            })
             .attr("stroke","black")
            .on("click", function(d,i) {  changeNoteIntervalo(d.operation);  });
-            
+
             gs
             .append("text")
             .attr("x", pad + 10)
             .attr("y", 17)
             .text(function (x) { return x.label; })
-            .attr("class", "tonic-text");      
+            .attr("class", "tonic-text");
 
             //separador Izquerdo
             svgtypeShow
@@ -554,13 +556,13 @@ var onlyBox=false;
             .attr("stroke","black")
             .attr("width", 2)
             .attr("height", 200)
-    
+
 
 
             var columns= 0;
 
      var svgOptions = d3.select("#options");
-         svgOptions.selectAll("g").remove();       
+         svgOptions.selectAll("g").remove();
 
  for(j = 0; j < scalesPainted.length; j++) {
     var modeToPaint =scalesPainted[j].mode;
@@ -579,7 +581,7 @@ var onlyBox=false;
             .data(optionsBoxes)
             .enter()
             .append("g")
-//.attr("transform", function (d, i) { return "translate("+secondColumnStart +", " + ( (i * (buttonHeight + pad) + pad)) + ")"; }) 
+//.attr("transform", function (d, i) { return "translate("+secondColumnStart +", " + ( (i * (buttonHeight + pad) + pad)) + ")"; })
            .attr("transform", function (d, i) { return "translate("+(columns*secondColumnStart) +","  + ( (i * (buttonHeight + pad) + pad)) + ")"; })
         buttons = gsMode
             .append("rect")
@@ -592,32 +594,32 @@ var onlyBox=false;
             .attr("height", 25)
             .attr("fill",function (x) {
 
-                var isModeSelected=0; 
+                var isModeSelected=0;
                             switch (x.index) {
                                 case 1:
                                     isModeSelected= scalesPainted[j].box1;
-                                    break; 
+                                    break;
                                 case 2:
                                     isModeSelected= scalesPainted[j].box2;
-                                    break;  
+                                    break;
                                 case 3:
                                     isModeSelected= scalesPainted[j].box3;
-                                    break; 
+                                    break;
                                 case 4:
                                     isModeSelected= scalesPainted[j].box4;
-                                    break; 
+                                    break;
                                 case 5:
                                     isModeSelected= scalesPainted[j].box5;
-                                    break; 
+                                    break;
                         }
-            
+
              if(isModeSelected == 1){
-                return "yellow"; 
+                return "yellow";
                     }else{
                 return "white";}
            })
             .attr("stroke","black")
-            .on("click", function(d) { 
+            .on("click", function(d) {
 
                  showBox(d.index,modeToPaint,type,onlyBox);
             });
@@ -628,13 +630,13 @@ var onlyBox=false;
             .attr("x", pad + 10)
             .attr("y", 17)
             .text(function (x) { return x.label; })
-            .attr("class", "tonic-text");       
+            .attr("class", "tonic-text");
 
      if( modeToPaint < 7 ){
-            
-      var showRelatives= scalesPainted[j].showRelatives; 
-      
-        gsMode 
+
+      var showRelatives= scalesPainted[j].showRelatives;
+
+        gsMode
             .append("rect")
             .attr("rx","5")
             .attr("ry","5")
@@ -646,7 +648,7 @@ var onlyBox=false;
             .attr("fill",function (x) {
 
                  if(showRelatives == 1){
-                return "yellow"; 
+                return "yellow";
                     }else{
                 return "white";
                 }
@@ -659,17 +661,17 @@ var onlyBox=false;
            .attr("x", pad + buttonHeight)
             .attr("y", buttonHeight*2 +buttonHeight-pad-5)
             .text("Show Relatives")
-            .attr("class", "tonic-text");  
+            .attr("class", "tonic-text");
 
         if(showRelatives){
             var stroke_width_Relatives=3;
         for (var cuerda=1; cuerda<7; cuerda++) {
-         
+
             destacaIntervalo(scalesPainted[j].mayorRelative,'#f44b42',stroke_width_Relatives,0,cuerda)
             destacaIntervalo(scalesPainted[j].minorRelative,'#42d4f4',stroke_width_Relatives,0,cuerda)
-        
-        }   
-        
+
+        }
+
             gsMode.append("text")
             .attr("x", 40+(columns*secondColumnStart))
             .attr("y", buttonHeight*3 +buttonHeight-pad-5 )
@@ -690,10 +692,10 @@ var onlyBox=false;
 
         }
 
-     }    
+     }
 
-  //opcion de ver solo la caja  
-      
+  //opcion de ver solo la caja
+
     // gsModeOnlyBox= svgOptions.append("g").attr("transform", function (d, i) { return "translate("+(columns*140)+", 20)"; })
     gsModeOnlyBox= svgOptions.append("g").attr("transform", function (d, i) { return "translate("+(columns*secondColumnStart) +", 40)"; })
     gsModeOnlyBox.append("text")
@@ -701,9 +703,9 @@ var onlyBox=false;
             .attr("y", 0 )
              .attr("font-size",35)
             .text(scalesPainted[j].name )
-            .attr("class", "tonic-text"); 
+            .attr("class", "tonic-text");
 
-      var onlyBoxes= scalesPainted[j].onlyBoxes; 
+      var onlyBoxes= scalesPainted[j].onlyBoxes;
         buttonsOnlyBox = gsModeOnlyBox
             .append("rect")
             .attr("rx","5")
@@ -716,7 +718,7 @@ var onlyBox=false;
             .attr("fill",function (x) {
 
                  if(onlyBoxes == 1){
-                return "yellow"; 
+                return "yellow";
                     }else{
                 return "white";}
            })
@@ -728,17 +730,17 @@ var onlyBox=false;
             .attr("x", columns*secondColumnStart+( pad + buttonHeight))
             .attr("y", buttonHeight*2 -buttonHeight)
             .text("Show only Box")
-            .attr("class", "tonic-text");  
-
-
-            
+            .attr("class", "tonic-text");
 
 
 
-  
+
+
+
+
    columns++;
    }
 
-       
+
 
 }
