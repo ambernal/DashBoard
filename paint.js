@@ -1,56 +1,8 @@
- var modesNames = [
-
-        { name: 'Major / Ionian', index: 1 , mayorRelative : 0, minorRelative: 9},
-        { name: 'Dorian', index: 2 , mayorRelative : 10, minorRelative: 7},
-        { name: 'Phrygian', index: 3 , mayorRelative : 8, minorRelative: 5},
-        { name: 'Lydian', index: 4 , mayorRelative : 7, minorRelative: 4},
-        { name: 'Mixolydian', index: 5 , mayorRelative : 5, minorRelative: 2},
-        { name: 'N Minor / Aeolian', index: 6 , mayorRelative : 0, minorRelative: 0},
-        { name: 'Locrian', index: 7 , mayorRelative : 1, minorRelative: 10},
-        { name: 'Pentatonic Mayor', index: 8 , mayorRelative : 0, minorRelative: 0},
-        { name: 'Pentatonic Menor', index: 9 , mayorRelative : 0, minorRelative: 0},
-    ];
-
-  var currentUsedIntervals = [
-        { "name": "F",  "intervalo": "0", "ispart": "0" ,"stroke":"#C6BD41","stroke_width":"4" },
-        { "name": "2b", "intervalo": "1", "ispart": "0" ,"stroke":"#ff8000","stroke_width":"3" },
-        { "name": "2M", "intervalo": "2",  "ispart": "0" ,"stroke":"#F08E0D","stroke_width":"3" },
-        { "name": "3m", "intervalo": "3", "ispart": "0" ,"stroke":"#00e573","stroke_width":"3" },
-        { "name": "3M", "intervalo": "4", "ispart": "0" ,"stroke":"#98388B","stroke_width":"3" },
-        { "name": "4J", "intervalo": "5", "ispart": "0" ,"stroke":"#193ADF","stroke_width":"3" },
-        { "name": "4#", "intervalo": "6", "ispart": "0" ,"stroke":"#666600","stroke_width":"3" },
-        { "name": "5J", "intervalo": "7", "ispart": "0" ,"stroke":"#2D5A55","stroke_width":"3" },
-        { "name": "6m", "intervalo": "8", "ispart": "0" ,"stroke":"#a64cff","stroke_width":"3" },
-        { "name": "6M", "intervalo": "9", "ispart": "0" ,"stroke":"#48CEE2","stroke_width":"3" },
-        { "name": "7m", "intervalo": "10", "ispart": "0" ,"stroke":"#2AAC44","stroke_width":"3" },
-        { "name": "7M", "intervalo": "11", "ispart": "0" ,"stroke":"#cc6600","stroke_width":"3" }
-
-        ];
 
 
-var intervals = ['0','1','2','3','4','5','6','7','8','9','10','11','12-1','12-2','12-3','12-4'];
-var naturalNotes = [
-        { id: 0, index: 0, label: "A"},
-        { id: 1, index: 1, label: "B"},
-        { id: 2, index: 2, label: "C"},
-        { id: 3, index: 3, label: "D"},
-        { id: 4, index: 4, label: "E"},
-        { id: 5, index: 5, label: "F"},
-        { id: 6, index: 6, label: "G"},
-                 ];
-
-var optionsIntervals = [
-        { id: 0, index: 0, label: "pintaChachi", weight:'100'},
-        { id: 1, index: 1, label: "Acordes Dominantes Desde 4º cuerda" , weight:100},
-        { id: 2, index: 2, label: "Acordes Dominantes Desde 5º cuerda" , weight:300},
-        { id: 3, index: 3, label: "Acordes Dominantes Desde 6º cuerda" , weight:300},
-        { id: 4, index: 4, label: "Arpeggios From Hell" , weight:300},
-        { id: 5, index: 5, label: "Clean Dashboard" , weight:300},
-     ];
 
  function paintDashboard() {
 
-  console.log("paintDashboard");
 var cuerdaTranslateStart= 20;
 var cuerdaTranslateSeparator= 40;
 var circleTranslateStart= 50;
@@ -117,23 +69,21 @@ var signalCoordenates = [
 
 //pinta las cuerdas
 var cuerdasMastil=  mastil.append("g")
-for (var cuerda=1; cuerda=6; cuerda++) {
-console.log("pinta la cuerda" +cuerda);
-    var intervalStartRoot = getIntervalFromTonicByString(tonica, cuerda)
-    var intervalStart= intervalStartRoot;
-    console.log("intervalStart para pintar en el dashboard (Traste donde esta la tonica)-> " +intervalStart);
+for (var cuerda=1; cuerda<=6; cuerda++) {
 
-    var idGeneratedName = '';
+    var intervalStartRoot = getIntervalFromTonicByString(tonica, cuerda)
+    var intervalToPaint= intervalStartRoot;
 
 
 //agrupador de lo que hay en la cuerda
      var line=  cuerdasMastil
             .append("g")
             .attr("id","cuerda"+cuerda)
-            .attr("transform", "translate(0, "+ (cuerdaTranslateStart+(cuerda*cuerdaTranslateSeparator))+")")
+            .attr("transform", "translate(0, "+ (cuerdaTranslateStart+((cuerda-1)*cuerdaTranslateSeparator))+")")
 
 
 //pinta las cuerda
+
        var cuerdas=  line.append("line")
             .attr("x1",90 )
             .attr("y1", 20)
@@ -142,31 +92,57 @@ console.log("pinta la cuerda" +cuerda);
             .attr("stroke-width",'2' )
             .attr("stroke",'black' )
   //pinta los circles
-        var circles =     line.selectAll("circle")
-            .data(intervals)
-            .enter()
-            .append("circle")
-             .attr("id",function (d, i) {
-                var idGenerated = '';
-                var octava = '';
-                idGenerated = (cuerda);
-                if(intervalStart>11)intervalStart = 0;
-                if(i>11) octava= '12-'
-                idGenerated = 'string-'+idGenerated +'-'+ octava +intervalStart
-                intervalStart++
-               return idGenerated
+
+//pintamos los circulos un poco mas grandes
+const circle = line
+  .selectAll('circle')
+  .data(intervals);
+circle
+  .enter()
+  .append("circle")
+   .attr("id",function (d, i) {
+      var idGenerated = '';
+      var octava = '';
+      idGenerated = (cuerda);
+      if(intervalToPaint>11)intervalToPaint = 0;
+      if(i>11) octava= '12-'
+      idGenerated = 'string-'+idGenerated +'-'+ octava +currentUsedIntervals[intervalToPaint].name
+      intervalToPaint++
+     return idGenerated
 
 
-            })
-            .attr("r",15 )
-            .attr("cy", 20)
-            .attr("cx", function (d, i) {return circleTranslateStart+ (circleTranslateSeparator*i) })
-            .attr("fill", 'rgba(255, 255, 255, 0.01)')
-            .attr("stroke-width",'0' )
-            .attr("stroke",'none' )
+  })
+  .attr("r",15 )
+  .attr("cy", 20)
+  .attr("cx", function (d, i) {return circleTranslateStart+ (circleTranslateSeparator*i) })
+  .attr("fill", 'rgba(255, 255, 255, 0.01)')
+  .attr("stroke-width",'0' )
+  .attr("stroke",'none' )
+ intervalToPaint= intervalStartRoot;
+  circle
+    .enter()
+    .append("circle")
+     .attr("id",function (d, i) {
+        var idGenerated = '';
+        var octava = '';
+        idGenerated = (cuerda);
+        if(intervalToPaint>11)intervalToPaint = 0;
+        if(i>11) octava= '12-'
+        idGenerated = 'SecondString-'+idGenerated +'-'+ octava +currentUsedIntervals[intervalToPaint].name
+        intervalToPaint++
+       return idGenerated
 
+
+    })
+    .attr("r",15 )
+    .attr("cy", 20)
+    .attr("cx", function (d, i) {return circleTranslateStart+ (circleTranslateSeparator*i) })
+    .attr("fill", 'rgba(255, 255, 255, 0.01)')
+    .attr("stroke-width",'0' )
+    .attr("stroke",'none' )
+/*
 //rhombus
- intervalStart= intervalStartRoot;
+ intervalToPaint= intervalStartRoot;
 
 //var radioSizeCircle=15
 var cYOrigen =   parseInt(20);
@@ -182,10 +158,10 @@ var radioSizeCircleInt = parseInt(radioSizeCircle);
                 var idGenerated = '';
                 var octava = '';
                 idGenerated = (cuerda);
-                if(intervalStart>11)intervalStart = 0;
+                if(intervalToPaint>11)intervalToPaint = 0;
                 if(i>11) octava= '12-'
-                idGenerated = 'rhombus-string-'+idGenerated +'-'+ octava +intervalStart
-                intervalStart++
+                idGenerated = 'rhombus-string-'+idGenerated +'-'+ octava +currentUsedIntervals[intervalToPaint].name
+                intervalToPaint++
                return idGenerated
             })
 
@@ -201,8 +177,8 @@ var radioSizeCircleInt = parseInt(radioSizeCircle);
     .attr("stroke","none")
     .attr("stroke-width",0)
     .attr("fill","rgba(255, 255, 255, 0.01)");
-
-         intervalStart= intervalStartRoot;
+*/
+         intervalToPaint= intervalStartRoot;
 //texts
          var texts =  line.selectAll("text")
             .data(intervals)
@@ -212,13 +188,16 @@ var radioSizeCircleInt = parseInt(radioSizeCircle);
                 var idGenerated = '';
                 var octava = '';
                 idGenerated = (cuerda);
-                if(intervalStart>11)intervalStart = 0;
+                if(intervalToPaint>11)intervalToPaint = 0;
                 if(i>11) octava= '12-'
-                idGenerated = 'string-'+idGenerated +'-'+ octava +intervalStart
-                 intervalStart++
+                idGenerated = 'string-'+idGenerated +'-'+ octava +currentUsedIntervals[intervalToPaint].name
+                 intervalToPaint++
                return idGenerated + '-text'
 
                 })
+            .attr("fret" , function (d, i) {
+              return d
+              })
             .attr("transform" ,"translate(0, 0) scale(1, 1)" )
             .attr("text-anchor","middle")
             .attr("x", function (d, i) {return textTranslateStart+ (textTranslateSeparator*i) })

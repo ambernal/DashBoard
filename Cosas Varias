@@ -1,1 +1,2 @@
-console.dir(car, { colors: true })
+console.log(JSON.stringify(car, null, 2))
+console.log('%O', car)

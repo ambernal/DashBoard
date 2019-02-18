@@ -17,22 +17,32 @@
 <svg id="intervals" width="160" height="300"></svg>
 <svg id="notes" width="160" height="300"></svg>
 <svg id="typeShow" width="160" height="300"></svg>
-<!--
-<svg height="264" width="264" >
-  <polygon fill="none" stroke="#FF8A65" stroke-width="4" points="30,0 0,45 30,90 60,45"/><polygon>
-</svg>
--->
 
 <br/>
-<button onclick="pintaAcordesDominantes(1)"> Arpeggios From Hell</button>
-<button onclick="pintaAcordesDominantes(4)"> Acordes Dominantes Desde 4º cuerda</button>
-<button onclick="pintaAcordesDominantes(5)"> Acordes Dominantes Desde 5º cuerda</button>
-<button onclick="pintaAcordesDominantes(6)"> Acordes Dominantes Desde 6º cuerda</button>
+<div>
+<button onclick="pintaAcordes(1,9)"> Arpeggios From Hell</button>
+<button onclick="pintaAcordes(4,9)"> Acordes Dominantes Desde 4º cuerda</button>
+<button onclick="pintaAcordes(5,9)"> Acordes Dominantes Desde 5º cuerda</button>
+<button onclick="pintaAcordes(6,9)"> Acordes Dominantes Desde 6º cuerda</button>
 <button onclick="cleanAll(true)"> Clean'em all</button>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
- <script src="http://d3js.org/d3.v2.js"></script>
- <script src="chords.js"></script>
+</div>
+<div>
+<button onclick="pintaAcordes(4,11)"> m7 Desde 4º cuerda</button>
+<button onclick="pintaAcordes(5,11)"> m7 Desde 5º cuerda</button>
+<button onclick="pintaAcordes(6,11)"> m7 Desde 6º cuerda</button>
+<button onclick="cleanAll(true)"> Clean'em all</button>
+</div>
+<div>
+<button onclick="pintaAcordes(1,12)"> Arpeggios From Hell</button>
+<button onclick="pintaAcordes(4,12)"> &Delta;7 Desde 4º cuerda</button>
+<button onclick="pintaAcordes(5,12)"> &Delta;7 Desde 5º cuerda</button>
+<button onclick="pintaAcordes(6,12)"> &Delta;7 Desde 6º cuerda</button>
+<button onclick="cleanAll(true)"> Clean'em all</button>
+</div>
+<script src="external/jquery.min.js"></script>
+ <script src="external/d3.v2.js"></script>
+  <script src="jsonObjects.js"></script>
+ <script src="chords2.js"></script>
  <script src="scales.js"></script>
   <script src="paint.js"></script>
  <script src="utils.js"></script>

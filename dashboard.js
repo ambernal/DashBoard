@@ -51,37 +51,8 @@ var circleTextPad_X=parseInt(70);
 //se usan
 var radioSizeCircle=15;
 var strokeWidthCircle=4;
-//F 2m 2M 3m 3M 4J 4# 5J 6m 6M 7b 7M
-//0 1  2  3  4  5  6  7  8  9  10 11
 
-// F 2M 3M 5J 6M
-var pentatonicaMayor = ["F","2M","3M","5J","6M"]
-// F 3m 4J 5J 7m
-var pentatonicaMenor = ["F","3m","4J","5J","7b"]
-// F 2M 3M 4J 5J 6M 7M
-var ionian = ["F","2M","3M","4J","5J","6M","7M"]
-// F 2M 3b 4J 5J 6M 7M
-var dorian = ["F","2M","3m","4J","5J","6M","7b"]
-// F 2M 3b 4J 5J 6b 7b
-var phrygian = ["F","2M","3M","4J","5J","6m","7b"]
-// F 2M 3M 4# 5J 6M
-var lydian = ["F","2M","3M","4aum","5J","6M","7M"]
-// F 2M 3M 4J 5J 6M 7b
-var mixolydian = ["F","2M","3M","4J","5J","6M","7b"]
-// F 2M 3b 4J 5J 6b 7b
-var aeolian = ["F","2M","3m","4J","5J","6m","7b"]
-// F 2b 3b 4J 4#/5b 6b 7b
-var locrian = ["F","2m","3m","4J","4aum","6m","7b"]
-
-//F 3M 5J 7b
-var acordesDominantes = ["F","3M","5J","7b"]
-
-var arpeggios= [];
-
-var tonica= 'A';
-
-jsonObj = [];
-jsonUnionNotasAcordes=[];
+//jsonUnionNotasAcordes=[];
 
 var  isAScalePaint=0;
 
@@ -112,7 +83,7 @@ var notesWithCurrentTonicOrderByIndex=[];
 
 $( document ).ready( function() {
   console.log("readyToRock");
-/*
+
     paintDashboard();
     paintSelectModes();
     paintIntervals();
@@ -120,23 +91,25 @@ $( document ).ready( function() {
     paintButtons(0);
    // paintOptions(0,-1);
    paintOptions(0);
-*/
+
 });
 
 function pintaChachiScale(index){pintaChachi(index);}
 function pintaChachi(index){
-
+  console.log("pintaChachi->");
 var radioSizeCircle=15;
 var strokeWidthCircle=2;
 var stroke='grey';
 
 if(isAScalePaint==1){
-  console.log("ya hay una escala pitnada");
-  stroke='red';
+  console.log("ya hay una escala pintada");
+  stroke='#72ff00';
 }
-createJSON(tonica, notes,index);
-
+createJSON(tonica,index);
+console.log("jsonObj "+JSON.stringify(jsonObj, null, 2))
 $.each(jsonObj,function() {
+
+  console.log("Pintamos el jsonObj en todas las cuerdas-> "+this['note'] +" que es el interval ->" +this["interval"]);
 
 for (var cuerda=1; cuerda<7; cuerda++) {
 
@@ -147,12 +120,15 @@ for (var cuerda=1; cuerda<7; cuerda++) {
 
 
 }
+console.log("Añadimos el intervalo a usedintervals");
 usedintervals(this["interval"]);
 });
 
+
+console.log("Ahora ya pintamos las opciones para el modo "+index);
+
 paintIntervals();
 
-console.log("Pintamos las opciones para el modo "+index);
 
 
 //con el scalesPainted updated volvemos a pintar el panel
@@ -167,7 +143,7 @@ jsonObj = [];
 }
 
 
-function pintaAcordesDominantes(cuerdaBase){
+function pintaAcordes(cuerdaBase,scale){
 
 //console.log('Desde cuerda->' +cuerdaBase);
 var cuerdaBase_Int = parseInt(cuerdaBase);
@@ -182,8 +158,7 @@ if(cuerdaBase_Int==4){
   stroke='purple'
 }
 
-//createJSON(tonica, notes,acordesDominantes);
-createJSON(tonica, notes,9);
+createJSON(tonica, scale);
 
 $.each(jsonObj,function() {
 
@@ -193,25 +168,17 @@ for (var cuerda=cuerdaBase_Int-3; cuerda<cuerdaBase_Int+1; cuerda++) {
     if(this['note'] == tonica)colour='yellow';
 
     pintaNote(cuerda,colour,this['note'],radioSizeCircle,strokeWidthCircle,stroke,this["interval"]);
-
-    if(this['note'] == tonica) {
-        var noteTextId = '#'+'string-'+cuerda+'-'+this["interval"]+'-text';
-      getCoordenatesUnion(cuerda,noteTextId);// solo llamo cuando es una tonica porque es desde la que monte la linea de union del acorde
-    }
     usedintervals(this["interval"]);
 
 }
 
-
  });
   // como es acorde ahora hay que pintar la union entre notas
-     pintaUnionAcordes(cuerdaBase,this['note'],acordesDominantes,stroke);
-    // pintaUnionAcordes(cuerdaBase_Int,this['note'],acordesDominantes,radioSizeCircle,strokeWidthCircle,stroke);
+   pintaUnionAcordesDinamically(cuerdaBase,this['note'],scale,stroke);
 
  console.log("volvemos a pintar los intervalos");
     paintIntervals();
     //lo vacio para que al pulsar otro boton no salgan las notas anteriores
     jsonObj = [];
-
 
 }
